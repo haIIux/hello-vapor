@@ -99,9 +99,7 @@ func routes(_ app: Application) throws {
             throw Abort(.badRequest)
         }
         return User.query(on: req.db)
-            .filter(\.$name == searchTerm)
             .filter(\.$username == searchTerm)
-            .filter(\.$email == searchTerm)
             .all()
     }
     

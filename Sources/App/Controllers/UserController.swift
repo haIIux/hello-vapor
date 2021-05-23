@@ -45,7 +45,14 @@ struct UserController: RouteCollection {
                 }
         }
         
-        
+        func searchHandler(_ req: Request) throws -> EventLoopFuture<[User]> {
+            guard let searchUsername = req.query[String.self, at: "term"] else {
+                throw Abort(.badRequest)
+            }
+            return User.query(on: req.db)
+                .filter(\.$username == searchUsername)
+                .all()
+        }
         
         func firstHandler(_ req: Request) throws -> EventLoopFuture<User> {
             User.query(on: req.db)
